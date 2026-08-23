@@ -1,0 +1,89 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Add Day-Old Price</h2>
+    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary mt-3 mb-3">Back to Dashboard</a>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Bird Type</label>
+                        <select name="product_id" class="form-control" required>
+                            <option value="">Select bird type</option>
+                            {% for product in day_old_products %}
+                            <option value="{{ product.product_id }}">{{ product.product_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Hatchery</label>
+                        <select name="hatchery_id" class="form-control" required>
+                            <option value="">Select hatchery</option>
+                            {% for hatchery in hatcheries %}
+                            <option value="{{ hatchery.hatchery_id }}">{{ hatchery.hatchery_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Price (₦)</label>
+                        <input type="number" step="0.01" name="price" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">State</label>
+                        <select name="state_id" id="state-filter" class="form-control" required>
+                            <option value="">Select state</option>
+                            {% for state in states %}
+                            <option value="{{ state.state_id }}">{{ state.state_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">LGA</label>
+                        <select name="lga_id" id="lga-filter" class="form-control" required>
+                            <option value="">Select state first</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary w-100">Add Price</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a href="{{ url_for('main.day_old_prices') }}" class="btn btn-outline-success">View Public Day-Old Prices Page</a>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const stateSelect = document.getElementById('state-filter');
+    const lgaSelect = document.getElementById('lga-filter');
+
+    stateSelect.addEventListener('change', function () {
+        const stateId = this.value;
+        lgaSelect.innerHTML = '<option value="">Loading...</option>';
+        if (!stateId) {
+            lgaSelect.innerHTML = '<option value="">Select state first</option>';
+            return;
+        }
+        fetch(`/get_lgas/${stateId}`)
+            .then(res => res.json())
+            .then(data => {
+                lgaSelect.innerHTML = '<option value="">Select LGA</option>';
+                data.forEach(lga => {
+                    lgaSelect.innerHTML += `<option value="${lga.id}">${lga.name}</option>`;
+                });
+            });
+    });
+});
+</script>
+{% endblock %}

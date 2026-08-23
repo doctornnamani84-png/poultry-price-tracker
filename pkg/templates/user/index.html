@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Poultry Price Tracker{% endblock %}
+
+{% block extra_css %}
+<style>
+  .hero {
+    background: linear-gradient(rgba(0,0,0,0.6),
+    rgba(0,0,0,0.6)),
+    url("{{ url_for('static', filename='img/cock1.jpeg') }}");
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+    margin: -1.5rem -0.75rem 0;
+  }
+  .hero h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  .hero p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+  {% include 'user/alert.html' %}
+  <h1>Know Your Chicken Prices Before You Buy Or Sell</h1>
+  <p>Live market rates for broilers, layers, day-old chicks, crates of egg & turkeys in Nigeria. Updated daily. No guesswork, no middleman markup.</p>
+  <p>Open data platform providing real-time poultry prices across Nigeria.</p>
+  <br>
+  <a href="{{ url_for('main.dashboard') }}" class="btn btn-success">Track Prices Now</a>
+</div>
+{% endblock %}

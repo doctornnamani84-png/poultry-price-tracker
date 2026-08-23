@@ -1,0 +1,20 @@
+{% extends 'pages/base.html' %}
+{% block title %}Edit Category{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Category</h2>
+    
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        
+        <div class="mb-3">
+            <label class="form-label">Category Name</label>
+            <input type="text" name="name" value="{{ category.category_name }}" class="form-control" required>
+        </div>
+        
+        <button type="submit" class="btn btn-success">Update</button>
+        <a href="{{ url_for('admin.manage_categories') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

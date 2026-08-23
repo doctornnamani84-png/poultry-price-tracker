@@ -1,0 +1,82 @@
+{% extends "pages/base.html" %} 
+{% block content %}
+<div class="container mt-4">
+    <h2>Manage Hatcheries</h2>
+  <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+    <!-- Add Hatchery Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5>Add New Hatchery</h5>
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Hatchery Name</label>
+                        <input type="text" name="hatchery_name" class="form-control" placeholder="e.g Agrited, Amo" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Contact</label>
+                        <input type="text" name="contact" class="form-control" placeholder="Phone number">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Distribution Days</label>
+                        <select name="distribution_days" class="form-control" multiple size="4">
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                        <small class="text-muted">Ctrl/Cmd-click to select multiple</small>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Add Hatchery</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Existing Hatcheries Table -->
+    <div class="card">
+        <div class="card-body">
+            <h5>Existing Hatcheries</h5>
+            <table class="table table-sm table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Hatchery Name</th>
+                        <th>Contact</th>
+                        <th>Distribution Days</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for hatch in hatcheries %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ hatch.hatchery_name }}</td>
+                        <td>{{ hatch.contact }}</td>
+                        <td>{{ hatch.distribution_days or '-' }}</td>
+                        <td class="text-end">
+                        <a href="{{ url_for('admin.edit_hatchery', id=hatch.hatchery_id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form method="POST" action="{{ url_for('admin.delete_hatchery', id=hatch.hatchery_id) }}" class="d-inline"
+                            onsubmit="return confirm('Delete {{ hatch.hatchery_name }}?')">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5" class="text-center">No hatcheries yet</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+{% endblock %}

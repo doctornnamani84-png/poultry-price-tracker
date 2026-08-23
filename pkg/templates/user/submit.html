@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Price{% endblock %}
+
+{% block extra_css %}
+<style>
+  body {
+    background-image: url("{{ url_for('static', filename='img/eggs4.jpg') }}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #231b36;
+  }
+  .content {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="max-width:500px;margin:0 auto">
+  <h3>Submit Price</h3>
+  <form action="{{ url_for('main.submit_price') }}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" id="lgas-data" value='{{ lgas_by_state|tojson|safe }}'>
+
+    <select name="category_id" class="form-select form-select-lg mb-3">
+        <option value="">Select Category</option>
+        {% for cat in categories %}
+        <option value="{{ cat.category_id }}">{{ cat.category_name }}</option>
+        {% endfor %}
+    </select>
+
+    <select id="product_id" name="product_id" class="form-select form-select-lg mb-3" required>
+        <option value="">Select Product</option>
+        {% for product in products %}
+        <option value="{{ product.product_id }}">{{ product.product_name }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="number" step="0.01" name="price" class="form-control form-control-lg mb-3" placeholder="Price ₦" required>
+
+    <select id="state_id" name="state_id" class="form-select form-select-lg mb-3" required>
+        <option value="">Select State</option>
+        {% for state in states %}
+        <option value="{{ state.state_id }}">{{ state.state_name }}</option>
+        {% endfor %}
+    </select>
+
+    <select id="lga_id" name="lga_id" class="form-select form-select-lg mb-3" required>
+        <option value="">Select Local Government</option>
+    </select>
+
+    <button class="btn btn-primary btn-lg w-100" type="submit">Submit</button>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const stateSelect = document.getElementById('state_id');
+    const lgaSelect = document.getElementById('lga_id');
+    const lgasByState = JSON.parse(document.getElementById('lgas-data').value || '{}');
+
+    stateSelect.addEventListener('change', function () {
+        const stateID = this.value;
+        lgaSelect.innerHTML = '<option value="">Select Local Government</option>';
+        if (!stateID || !lgasByState[stateID]) return;
+
+        lgasByState[stateID].forEach(function (lga) {
+            const option = document.createElement('option');
+            option.value = lga.lga_id;
+            option.textContent = lga.name;
+            lgaSelect.appendChild(option);
+        });
+    });
+});
+</script>
+{% endblock %}

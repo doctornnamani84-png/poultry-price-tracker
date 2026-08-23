@@ -1,0 +1,235 @@
+:root {
+  --primary-color: #31b37b;
+  --secondary-color: #ff9800;
+  --secondary-gray: #6c757d;
+  --bg-light: #f4f4f4;
+  --border-color: #dcdcdc;
+  --text-dark: #333333;
+  --myfont:cursive !important;
+}
+.customfont{
+    font-family: var(--myfont);
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  background-image: radial-gradient(circle at top right, #e2ebf0 0%, #f8f9fa 100%);
+  background-attachment: fixed;
+  color: var(--text-dark);
+}
+
+/* Navbar */
+.navbar {
+  background-color: #ffffff !important;
+  border-bottom: 3px solid var(--primary-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  color: var(--primary-color) !important;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.nav-link {
+  font-size: 16px;
+  color: var(--primary-color) !important;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: #258a5f !important;
+}
+
+/* Custom Buttons */
+.custom-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+}
+
+.custom-btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.custom-btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.25rem;
+}
+
+.custom-btn-primary {
+  background-color: var(--primary-color);
+  color: var(--text-dark);
+  border: 1px solid var(--primary-color);
+}
+
+.custom-btn-primary:hover {
+  filter: brightness(0.9);
+  color: var(--text-dark);
+}
+
+.custom-btn-secondary {
+  background-color: var(--secondary-color);
+  color: #ffffff;
+  border: 1px solid var(--secondary-color);
+}
+
+.custom-btn-secondary:hover {
+  filter: brightness(0.9);
+  color: #ffffff;
+}
+
+.custom-btn-outline {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.custom-btn-outline:hover {
+  background-color: var(--primary-color);
+  color: var(--text-dark);
+}
+
+.custom-btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+  border: 1px solid #dc3545;
+}
+
+.custom-btn-danger:hover {
+  filter: brightness(0.9);
+  color: #fff;
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  background-image: url('../img/unsplash_8927073c.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 120px 0;
+  margin-bottom: 40px;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.hero-title {
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitle {
+  margin-bottom: 25px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.search-form-card {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Cards / Ad Listings */
+.card {
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  /* simple shadow */
+}
+
+.card:hover {
+  border-color: var(--primary-color);
+  /* simple hover effect */
+}
+
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 4px 4px 0 0;
+}
+
+.ad-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #28a745;
+  /* Bootstrap success green */
+}
+
+/* Sidebar */
+.filter-sidebar {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.filter-sidebar label {
+  font-weight: bold;
+}
+
+/* Profile Page */
+.profile-header {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 45px;
+  color: #adb5bd;
+  border: 3px solid var(--primary-color);
+  margin-bottom: 10px;
+}
+
+/* Form Styles */
+.form-control,
+.form-select {
+  border-radius: 4px;
+  border: 1px solid #cccccc;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+}
+
+NO-OP
+/* Custom Theme Utilities */
+.bg-custom-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.text-custom-primary {
+  color: var(--primary-color) !important;
+}
+
+.border-custom-primary {
+  border-color: var(--primary-color) !important;
+}

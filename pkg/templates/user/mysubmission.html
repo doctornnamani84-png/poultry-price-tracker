@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}My Submissions{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-header bg-primary text-white">
+    <h5 class="mb-0">My Price Submissions</h5>
+  </div>
+  <div class="card-body">
+
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Item</th>
+          <th>Price (₦)</th>
+          <th>State</th>
+          <th>LGA</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if submissions %}
+          {% for p in submissions %}
+          <tr>
+            <td>{{ p.product.product_name }}</td>
+            <td>{{ "{:,}".format(p.price) }}</td>
+            <td>{{ p.state.state_name }}</td>
+            <td>{{ p.lga.lga_name }}</td>
+            <td>{{ p.date_submitted.strftime('%Y-%m-%d') }}</td>
+            <td>
+              {% if p.is_approved %}
+                <span class="badge bg-success">Approved</span>
+              {% else %}
+                <span class="badge bg-warning">Pending</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="6" class="text-center">You haven't submitted any prices yet</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

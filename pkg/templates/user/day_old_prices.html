@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4">🐣 Day-Old Prices</h2>
+
+<form method="GET" class="card p-3 mb-4 d-flex flex-row flex-wrap align-items-end" style="gap: 15px;">
+    
+    <div class="flex-grow-1" style="min-width: 220px;">
+        <label class="form-label fw-bold">Bird Type</label>
+        <select name="product_id" class="form-select form-select-lg">
+            <option value="">All Bird Types</option>
+            {% for product in day_old_products %}
+            <option value="{{ product.product_id }}" {% if selected_product == product.product_id %}selected{% endif %}>
+                {{ product.product_name }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="flex-grow-1" style="min-width: 180px;">
+        <label class="form-label fw-bold">State</label>
+        <select name="state_id" class="form-select form-select-lg">
+            <option value="">All States</option>
+            {% for state in states %}
+            <option value="{{ state.state_id }}" {% if selected_state == state.state_id %}selected{% endif %}>
+                {{ state.state_name }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div style="min-width: 160px;">
+        <label class="form-label fw-bold">From Date</label>
+        <input type="date" name="from_date" class="form-control form-control-lg" value="{{ from_date or '' }}">
+    </div>
+
+    <div style="min-width: 160px;">
+        <label class="form-label fw-bold">To Date</label>
+        <input type="date" name="to_date" class="form-control form-control-lg" value="{{ to_date or '' }}">
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-success btn-lg px-4">Filter</button>
+    </div>
+
+    <div>
+        <a href="{{ url_for('main.day_old_prices', show_all=1) }}" class="btn btn-outline-secondary btn-lg px-4">Full History</a>
+    </div>
+
+</form>
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+    {% if not from_date and not to_date and show_all != '1' %}
+    <span class="badge bg-info text-dark">Showing latest price per bird type/hatchery</span>
+    {% else %}
+    <span class="badge bg-secondary">Showing full history</span>
+    {% endif %}
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Bird Type</th>
+                <th>Hatchery</th>
+                <th>Distribution Days</th>
+                <th>State</th>
+                <th>LGA</th>
+                <th>Price (₦)</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in prices %}
+            <tr>
+                <td>{{ p.product.product_name }}</td>
+                <td>{{ p.hatchery.hatchery_name if p.hatchery else 'N/A' }}</td>
+                <td>{{ p.hatchery.distribution_days if p.hatchery and p.hatchery.distribution_days else '-' }}</td>
+                <td>{{ p.state.state_name if p.state else 'N/A' }}</td>
+                <td>{{ p.lga.lga_name if p.lga else 'N/A' }}</td>
+                <td><b>₦{{ "{:,.2f}".format(p.price) }}</b></td>
+                <td>{{ p.date_submitted.strftime('%d-%b-%Y') }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="text-center">No day-old prices found for this filter</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

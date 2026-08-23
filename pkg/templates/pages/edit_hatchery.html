@@ -1,0 +1,39 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Hatchery</h2>
+    <a href="{{ url_for('admin.manage_hatcheries') }}" class="btn btn-secondary mt-3 mb-3">Back to Manage Hatcheries</a>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Hatchery Name</label>
+                        <input type="text" name="hatchery_name" class="form-control" value="{{ hatchery.hatchery_name }}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Contact</label>
+                        <input type="text" name="contact" class="form-control" value="{{ hatchery.contact or '' }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Distribution Days</label>
+                        {% set current_days = (hatchery.distribution_days or '').split(', ') %}
+                        <select name="distribution_days" class="form-control" multiple size="7">
+                            {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+                            <option value="{{ day }}" {% if day in current_days %}selected{% endif %}>{{ day }}</option>
+                            {% endfor %}
+                        </select>
+                        <small class="text-muted">Ctrl/Cmd-click to select multiple</small>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

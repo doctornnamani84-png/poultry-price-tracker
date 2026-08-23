@@ -1,0 +1,83 @@
+{% extends "pages/base.html" %}
+{% block content %}
+<h2>Add Day-Old Price</h2> 
+
+<form method="POST" action="{{ url_for('admin.add_day_old') }}" class="card p-3 mb-4">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <label>State</label>
+            <select name="state_id" class="form-control" required>
+                <option value="">-- Select State --</option>
+                {% for s in states %}
+                <option value="{{ s.state_id }}">{{ s.state_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label>Hatchery</label>
+            <select name="hatchery_id" class="form-control" required>
+                <option value="">-- Select Hatchery --</option>
+                {% for h in hatcheries %}
+                <option value="{{ h.hatchery_id }}">{{ h.hatchery_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2 mb-3">
+            <label>Bird Type</label>
+            <select name="bird_type" class="form-control" required>
+                <option>Broiler</option>
+                <option>Cockerel</option>
+                <option>Layer</option>
+                <option>Turkey</option>
+            </select>
+        </div>
+        <div class="col-md-2 mb-3">
+            <label>Day</label>
+            <select name="day_of_week" class="form-control" required>
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+                <option>Saturday</option>
+                <option>Sunday</option>
+            </select>
+        </div>
+        <div class="col-md-2 mb-3">
+            <label>Price ₦</label>
+            <input type="number" step="0.01" name="price" class="form-control" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <label>Date</label>
+            <input type="date" name="price_date" class="form-control" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label>Availability</label>
+            <select name="availability" class="form-control">
+                <option>Available</option>
+                <option>Sold Out</option>
+                <option>Pre-order</option>
+            </select>
+        </div>
+    </div>
+    <button class="btn btn-success">Save Price</button>
+</form>
+
+<h4>Recent Entries</h4>
+<table class="table table-sm">
+    <tr><th>Date</th><th>Day</th><th>State</th><th>Hatchery</th><th>Bird</th><th>Price</th></tr>
+    {% for p in recent_prices %}
+    <tr>
+        <td>{{ p.price_date }}</td>
+        <td>{{ p.day_of_week }}</td>
+        <td>{{ p.state.state_name if p.state else '-' }}</td>
+        <td>{{ p.hatchery.hatchery_name if p.hatchery else '-' }}</td>
+        <td>{{ p.bird_type }}</td>
+        <td>₦{{ p.price }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

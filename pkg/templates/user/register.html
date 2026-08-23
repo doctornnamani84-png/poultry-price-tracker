@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-center py-5">
+  <div class="row justify-content-center w-100">
+    <div class="col-md-10 col-lg-7">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <div class="text-center mb-4">
+            {% include 'user/alert.html' %}
+            <h2 class="mt-2 mb-1 fw-bold text-custom-primary">Create an Account</h2>
+            <p class="text-muted">Join our community today</p>
+          </div>
+
+          <form action="" method="post" novalidate>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="mb-3">
+              <label for="usernameInput" class="form-label fw-bold">Username</label>
+              <input type="text" class="form-control form-control-lg" name="username" id="usernameInput" placeholder="Username" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="emailInput" class="form-label fw-bold">Email address</label>
+              <input type="email" class="form-control form-control-lg" name="email" id="emailInput" placeholder="Email address" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="phoneInput" class="form-label fw-bold">Phone</label>
+              <input type="text" class="form-control form-control-lg" name="phone" id="phoneInput" placeholder="Phone number" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="stateSelect" class="form-label fw-bold">State</label>
+              <select name="state" id="stateSelect" class="form-select">
+                {% for state in states %}
+                <option value="{{ state.state_id }}">{{ state.state_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="passwordInput" class="form-label fw-bold mb-1">Password</label>
+                <input type="password" class="form-control form-control-lg" name="password" id="passwordInput" placeholder="••••••••" required>
+              </div>
+              <div class="col-md-6">
+                <label for="confirmPasswordInput" class="form-label fw-bold mb-1">Confirm Password</label>
+                <input type="password" class="form-control form-control-lg" name="confirm_pass" id="confirmPasswordInput" placeholder="••••••••" required>
+              </div>
+            </div>
+
+            <div class="mb-4 form-check">
+              <input type="checkbox" class="form-check-input" id="termsCheck" required>
+              <label class="form-check-label text-muted" for="termsCheck">
+                I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> and <a href="#" class="text-decoration-none">Privacy Policy</a>.
+              </label>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="custom-btn custom-btn-primary custom-btn-lg w-100">Create Account</button>
+            </div>
+          </form>
+
+          <div class="text-center mt-4">
+            <p class="text-muted mb-0">Already have an account? <a href="{{ url_for('main.login') }}" class="text-decoration-none fw-bold">Log in</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">🐔 Poultry Prices</h2>
+
+    <!-- FILTER FORM -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Filter Prices</h5>
+            <form method="GET" action="{{ url_for('main.prices') }}">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">State</label>
+                        <select name="state" id="state-filter" class="form-select">
+                            <option value="">All States</option>
+                            {% for state in states %}
+                            <option value="{{ state.state_id }}" {% if request.args.get('state') == state.state_id|string %}selected{% endif %}>
+                                {{ state.state_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">LGA</label>
+                        <select name="lga" id="lga-filter" class="form-select">
+                            <option value="">All LGAs</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Product</label>
+                        <select name="product" class="form-select">
+                            <option value="">All Products</option>
+                            {% for p in products %}
+                            <option value="{{ p.product_id }}" {% if request.args.get('product') == p.product_id|string %}selected{% endif %}>
+                                {{ p.product_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">From Date</label>
+                        <input type="date" name="from_date" class="form-control" value="{{ from_date or '' }}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">To Date</label>
+                        <input type="date" name="to_date" class="form-control" value="{{ to_date or '' }}">
+                    </div>
+
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="submit" class="btn btn-success w-100">Search</button>
+                    </div>
+
+                    <div class="col-md-3 d-flex align-items-end">
+                        <a href="{{ url_for('main.prices', show_all=1) }}" class="btn btn-outline-secondary w-100">View Full History</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PRICES TABLE -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title mb-0">Prices Table</h5>
+                {% if not from_date and not to_date and show_all != '1' %}
+                <span class="badge bg-info text-dark">Showing latest price per product/LGA</span>
+                {% else %}
+                <span class="badge bg-secondary">Showing full history</span>
+                {% endif %}
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Product</th>
+                            <th>State</th>
+                            <th>LGA</th>
+                            <th>Price</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for price in prices %}
+                    <tr>
+                        <td>{{ price.product.product_name }}</td>
+                        <td>{{ price.state.state_name if price.state else 'N/A' }}</td>
+                        <td>{{ price.lga.lga_name }}</td>
+                        <td>₦{{ "{:,.2f}".format(price.price) }}</td>
+                        <td>{{ price.date_submitted.strftime('%d-%b-%Y') }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5" class="text-center">No prices found for this filter</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS FOR DYNAMIC LGA -->
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    let stateSelect = document.getElementById('state-filter');
+    let lgaSelect = document.getElementById('lga-filter');
+    let selectedState = "{{ request.args.get('state') }}";
+    let selectedLga = "{{ request.args.get('lga') }}";
+
+    if(selectedState){
+        loadLGAs(selectedState, selectedLga);
+    }
+
+    stateSelect.addEventListener('change', function(){
+        loadLGAs(this.value, '');
+    });
+
+    function loadLGAs(state_id, lga_to_select){
+        lgaSelect.innerHTML = '<option value="">All LGAs</option>';
+        if(!state_id) return;
+        
+        fetch(`/get_lgas/${state_id}`)
+        .then(res => res.json())
+        .then(data => {
+            data.forEach(lga => {
+                let selected = (lga.id == lga_to_select) ? 'selected' : '';
+                lgaSelect.innerHTML += `<option value="${lga.id}" ${selected}>${lga.name}</option>`;
+            });
+        });
+    }
+});
+</script>
+{% endblock %}

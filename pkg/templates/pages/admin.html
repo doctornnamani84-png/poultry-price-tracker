@@ -1,0 +1,40 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <h3 class="mb-4">Admin Dashboard</h3>
+
+    <div class="row g-3">
+        <!-- Categories overview -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title mb-3">Categories</h6>
+                    <ul class="list-unstyled mb-3">
+                        {% for cat in categories %}
+                        <li class="mb-1">{{ cat.category_name }}</li>
+                        {% else %}
+                        <li class="text-muted">No categories yet</li>
+                        {% endfor %}
+                    </ul>
+                    <a href="{{ url_for('admin.manage_categories') }}" class="btn btn-sm btn-outline-primary">Manage Categories</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title mb-3">Quick Actions</h6>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('admin.review_prices') }}" class="btn btn-success">Review Pending Prices</a>
+                        <a href="{{ url_for('admin.add_day_old_price') }}" class="btn btn-outline-success">Add Day-Old Price</a>
+                        <a href="{{ url_for('admin.manage_hatcheries') }}" class="btn btn-outline-secondary">Manage Hatcheries</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

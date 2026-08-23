@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block extra_css %}
+<style>
+  body {
+    background: linear-gradient(135deg, rgba(247, 251, 242, 0.95) 0%, rgba(238, 248, 235, 0.95) 45%, rgba(233, 242, 223, 0.95) 100%), url("{{ url_for('static', filename='img/eggs3.png') }}");
+    background-size: cover;
+    background-position: center;
+  }
+  .auth-card {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-center py-5">
+  <div class="row justify-content-center w-100">
+    <div class="col-md-10 col-lg-6">
+      <div class="card auth-card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <div class="text-center mb-4">
+            {% include "user/alert.html" %}
+            <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                 style="width: 58px; height: 58px; background: linear-gradient(135deg, #f4b942, #f7d46f); color: #5b3d00;">
+              <i class="bi bi-person-circle fs-2"></i>
+            </div>
+            <h2 class="mt-2 mb-1 fw-bold text-custom-primary">Welcome Back</h2>
+            <p class="text-muted">Please log in to your account</p>
+          </div>
+
+          <form action="" method="post">
+            {{ form.csrf_token }}
+            <div class="mb-3">
+              {{ form.email.label(class_="form-label fw-bold") }}
+              {{ form.email(class_="form-control form-control-lg") }}
+            </div>
+            <div class="mb-4">
+              {{ form.password.label(class_="form-label fw-bold mb-0") }}
+              {{ form.password(class_="form-control form-control-lg") }}
+            </div>
+            <div class="d-grid">
+              {{ form.submit(class_="custom-btn custom-btn-primary custom-btn-lg w-100") }}
+            </div>
+          </form>
+
+          <div class="text-center mt-4">
+            <p class="text-muted mb-0">Don't have an account? <a href="{{ url_for('main.register') }}" class="text-decoration-none fw-bold">Sign up</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+  <title>Admin</title>
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, #f8f9fa 0%, #eef5ef 100%);
+    }
+    footer {
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="d-flex">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold text-success" href="{{ url_for('main.home_page') }}">🐔 Poultry Price Tracker</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.prices') }}">Prices</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.submit') }}">Submit</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.day_old_prices') }}"><i class="bi bi-egg"></i> Day-Old Prices</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.mysubmissions') }}">My Entries</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{{ url_for('main.admin') }}">Admin</a></li>
+          {% if session.get('useronline') %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a></li>
+          {% else %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.login') }}">Login</a></li>
+          <li class="nav-item"><a class="nav-link btn btn-success btn-sm text-white px-3 ms-2" href="{{ url_for('main.register') }}">Register</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+      <div class="flex-grow-1 p-4">
+        {% block content %}{% endblock %}
+      </div>
+    </div>  
+
+  <div class="container py-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="mb-3">Admin Panel</h2>
+        <p class="text-muted">This area is ready for admin tools and moderation features.</p>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+</html>
